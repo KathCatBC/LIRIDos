@@ -2,8 +2,8 @@ require("dotenv").config();
 
 //import keys.js  and store in a variable
 
-var spotify = new Spotify(keys.spotify);
-var client = new Twitter(keys.twitter);
+// var spotify = new Spotify(keys.spotify);
+// var client = new Twitter(keys.twitter);
 
 var defaultMovie = "Mr. Nobody";
 var defaultSong = "The Sign by Ace of Base";
@@ -13,22 +13,25 @@ var withThis = process.argv[3];
 var outputString = "";
 var outputBreak = "\n --------------- \n"
 
+console.log("what = " + whatToDo);
+console.log("with = " + withThis);
 
-liriThis(whatToDo, withThis){
+
+function liriThis(whatToDo, withThis) {
     switch(whatToDo) {
-        case my-tweets:
+        case "my-tweets":
             console.log("my tweets");
             tweeted();
             break;
-        case spotify-this-song:
+        case "spotify-this-song":
             console.log("spotify");
             listened(withThis);
             break;
-        case movie-this:
+        case "movie-this":
             console.log("movie");
             watched(withThis);
             break;
-        case do-what-it-says:
+        case "do-what-it-says":
             console.log("doing this");
             // read it the contents of random.txt
             // split input string at the comma
