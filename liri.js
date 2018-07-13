@@ -1,17 +1,22 @@
 var env = require("dotenv").config();
 var fs = require("fs");
+var request = require("request")
 
-//import keys.js  and store in a variable
+var keys = require("./keys.js");
 
+var Spotify = require("node-spotify-api")
 var spotify = new Spotify(keys.spotify);
 var client = new Twitter(keys.twitter);
+
+console.log("spotify = " + spotify);
+// console.log("client = " + client);
 
 var defaultMovie = "Mr. Nobody";
 var defaultSong = "The Sign by Ace of Base";
 
 var whatToDo = process.argv[2];
 var withThis = process.argv[3];
-var outputString = "";
+var outputData = "";
 var outputBreak = "\n --------------- \n"
 
 
@@ -33,7 +38,7 @@ function liriThis(whatToDo, withThis) {
             console.log("doing this");
             fs.readFile("random.txt", "utf8", function(err, data) {
             if (err) {
-                outputString = "Error reading random.txt" + outputBreak
+                outputData = "Error reading random.txt";
             } else {
                 var randomArr = data.split(",");
                 whatToDo = randomArr[0];
@@ -44,7 +49,8 @@ function liriThis(whatToDo, withThis) {
             break;
         default:
             console.log("sorry I don't understand");
-            // outputString = "Huh??"
+            doOutput("Huh??")
+            
     }
 }
 
@@ -67,24 +73,34 @@ function listened(song) {
 }
 
 function watched(movie) {
-    console.log("watching")
+
     if (!movie) movie = defaultMovie;
-    
-         //if no movie is provided use defaultMovie;
-        //Output the following:
-        //  Movie title
-        //  Year of release
-        // IMDB Rating of the movie
-        // Rotten tomatoes rating
-        // country where is was produced
-        // Language of the movie
-        // Plot
-        //Actors
+
+    var queryUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&tomatoes=true&r=json&apikey=trilogy";
+   
+    request(queryUrl, function (err, res, body) {
+        if (!err && res.statusCode === 200) {
+            outputData = "Title: " + JSON.parse(body).Title + "\n";
+            outputData += "Year:  " + JSON.parse(body).Year + "\n";
+            outputData += "IMDB Rating:  " + JSON.parse(body).imdbRating + "\n";
+            outputData += "Rotten Tomatoes Rating:  "  + JSON.parse(body).tomatoMeter  + "\n";
+            outputData += "Country: " + JSON.parse(body).Country  + "\n";
+            outputData += "Language:  " + JSON.parse(body).Language  + "\n";
+            outputData += "Plot:  " + JSON.parse(body).Plot  + "\n";
+            outputData += "Actors:  "+ JSON.parse(body).Actors  + "\n";
+        } else {
+            outputData = "Sorry there was an error with that request"
+        }
+        doOutput(outputData)
+    });
+        
 }
 
+function doOutput(outputData) {
+    console.log(outputData) 
+    fs.appendFile("log.txt", outputData + "\n" + outputBreak, function(err) {
+        if (err) console.log("Screw the log")
+    })
+}
 
 liriThis(whatToDo, withThis)
-
-// console.log output string
-//append output to log.txt
-
