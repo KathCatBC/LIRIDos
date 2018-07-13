@@ -10,28 +10,36 @@ var defaultSong = "The Sign by Ace of Base";
 
 var whatToDo = process.argv[2];
 var withThis = process.argv[3];
+var outputString = "";
+var outputBreak = "\n --------------- \n"
 
-switch(whatToDo) {
-    case my-tweets:
-        console.log("my tweets");
-        tweeted();
-        break;
-    case spotify-this-song:
-        console.log("spotify");
-        listened(withThis);
-        break;
-    case movie-this:
-        console.log("movie");
-        watched(withThis);
-        break;
-    case do-what-it-says:
-        console.log("doing this");
 
-        // read in the contents of random.txt and do what it says
-        break;
-    default:
-        console.log("sorry I don't understand");
-    
+liriThis(whatToDo, withThis){
+    switch(whatToDo) {
+        case my-tweets:
+            console.log("my tweets");
+            tweeted();
+            break;
+        case spotify-this-song:
+            console.log("spotify");
+            listened(withThis);
+            break;
+        case movie-this:
+            console.log("movie");
+            watched(withThis);
+            break;
+        case do-what-it-says:
+            console.log("doing this");
+            // read it the contents of random.txt
+            // split input string at the comma
+            // var whatToDo = first half of string
+            // var withThis = second half of string
+            //liriThis(whatToDo, withThis)
+            break;
+        default:
+            console.log("sorry I don't understand");
+            // outputString = "Huh??"
+    }
 }
 
 function tweeted() {
@@ -67,6 +75,9 @@ function watched(movie) {
         // Plot
         //Actors
 }
+
+
+liriThis(whatToDo, withThis)
 
 // console.log output string
 //append output to log.txt
