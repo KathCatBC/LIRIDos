@@ -1,9 +1,10 @@
-require("dotenv").config();
+var env = require("dotenv").config();
+var fs = require("fs");
 
 //import keys.js  and store in a variable
 
-// var spotify = new Spotify(keys.spotify);
-// var client = new Twitter(keys.twitter);
+var spotify = new Spotify(keys.spotify);
+var client = new Twitter(keys.twitter);
 
 var defaultMovie = "Mr. Nobody";
 var defaultSong = "The Sign by Ace of Base";
@@ -12,9 +13,6 @@ var whatToDo = process.argv[2];
 var withThis = process.argv[3];
 var outputString = "";
 var outputBreak = "\n --------------- \n"
-
-console.log("what = " + whatToDo);
-console.log("with = " + withThis);
 
 
 function liriThis(whatToDo, withThis) {
@@ -33,11 +31,16 @@ function liriThis(whatToDo, withThis) {
             break;
         case "do-what-it-says":
             console.log("doing this");
-            // read it the contents of random.txt
-            // split input string at the comma
-            // var whatToDo = first half of string
-            // var withThis = second half of string
-            //liriThis(whatToDo, withThis)
+            fs.readFile("random.txt", "utf8", function(err, data) {
+            if (err) {
+                outputString = "Error reading random.txt" + outputBreak
+            } else {
+                var randomArr = data.split(",");
+                whatToDo = randomArr[0];
+                withThis = randomArr[1];
+                liriThis(whatToDo, withThis)
+            }
+            })
             break;
         default:
             console.log("sorry I don't understand");
